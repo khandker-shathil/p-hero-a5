@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Issues Tracker.</title>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Custom Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
+    <!-- DaisyUI and Tailwind CDN  -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./styles/style.css">
+</head>
+<body>
+    <section class="grid place-items-center h-screen">
+        <fieldset class="flex flex-col items-center fieldset bg-white border-base-300 rounded-box border shadow-sm p-8 space-y-2">
+            <img src="./assets/github-logo.png" alt="github-logo" srcset="">
+            <h2 class="font-bold text-4xl">GitHub Issues Tracker</h2>
+            <p class="text-neutral/50 text-xl">Sing in to manage your issues</p>
+
+            <div class="flex flex-col items-start mt-4">
+                <label class="label font-bold text-black">Username</label>
+                <input id="nameinput" type="text" class="input w-96" placeholder="Username" />
+                <p class="text-primary mt-2">Default: admin</p>
+            </div>
+
+            <div class="flex flex-col items-start mt-4">
+                <label class="label font-bold text-black">Password</label>
+                <input id="passwordinput" type="password" class="input w-96" placeholder="Password" />
+                <p class="text-primary mt-2">Default: admin123</p>
+            </div>
+            <button id="signinbutton" class="btn btn-primary w-96 mt-4">Sign In</button>
+            
+            <div class="flex items-center w-full gap-2">
+                <hr class="flex-grow border-gray-300">
+                <span class="text-sm text-gray-400">OR</span>
+                <hr class="flex-grow border-gray-300">
+            </div>
+
+            <p class="text-sm text-gray-400">Demo Credentials:</p>
+            <div class="flex flex-col items-center bg-gray-100 w-96 p-4 rounded">
+                <p class="font-bold text-sm">Username: <span class="font-normal">admin</span></p>
+                <p class="text-sm font-bold">Password: <span class="font-normal">admin123</span></p> 
+            </div>
+        </fieldset>
+    </section>
+
+    <script src="./scripts/index.js"></script>
+</body>
+</html>
