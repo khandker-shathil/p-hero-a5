@@ -1,7 +1,12 @@
 //Loading All Data
-const loadData =() => {fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
+const loadData =() => {
+    fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
 .then((res)=>res.json())
-.then((json)=> displayData(json.data))
+.then((json)=> {displayData(json.data)
+// Issues Length
+const lenghtIssues = json.data.length;
+document.getElementById("issue-count").innerText = `${lenghtIssues} Issues`;
+})
 };
 
 // Login Page Script
@@ -46,7 +51,7 @@ btnOpen.addEventListener("click", () => {
 btnClosed.addEventListener("click", () => {
     fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
     .then((res)=>res.json())
-    .then((json)=> displayClosedData(json.data))
+    .then((json)=> displayClosedData(json.data)) 
 
     btnClosed.classList.add("btn-active", 'btn-primary');
     btnAll.classList.remove("btn-active", "btn-primary");
@@ -101,7 +106,7 @@ const displayOpenData = (data) => {
         `;
         cardsContainer.append(card);
     }});
-    manageSpinner(false);
+    manageSpinner(false);   
 }
 
 //Displaying Closed Data
@@ -168,6 +173,10 @@ const displayData = (data) => {
     cardsContainer.innerHTML = "";
     data.forEach(issue => {
         const card = document.createElement("div");
+        card.addEventListener("click", () => {
+            console.log(issue.id);
+            loadWordDetails(issue.id);
+        });
         card.innerHTML = `
             <div class="border-t-4 ${issue.status === 'open' ? 'border-t-green-600' : 'border-t-[#A855F7]'}  rounded-md shadow-sm h-full flex flex-col">
                 <div class="card-head flex justify-between p-3">
@@ -189,7 +198,7 @@ const displayData = (data) => {
                         } else if (label === 'enhancement'){
                             return `<p class="p-1 rounded-full bg-[#60A5FA50] text-[#2563EB] text-xs"><i class="fas fa-lightbulb"></i> ${label}</p>`;
                         } else if (label === 'good first issue'){
-                            return `<p class="p-1 rounded-full bg-[#3B82F650] text-[#2563EB] text-xs"><i class="fas fa-star"></i> ${label}</p>`;
+                            return `<p class="p-1 rounded-full bg-[#dae41b50] text-[#f58c03] text-xs"><i class="fas fa-star"></i> ${label}</p>`;
                         }   
                     }).join('')}
                 </div>
@@ -202,10 +211,10 @@ const displayData = (data) => {
         `;
         cardsContainer.append(card);
     });
-    manageSpinner(false);
 };
 loadData();
 
+//Managing Spinner Logic
 const manageSpinner = (status) =>{
     if(status){
     document.getElementById("spinner").classList.remove('hidden');
@@ -214,4 +223,55 @@ const manageSpinner = (status) =>{
         document.getElementById("spinner").classList.add('hidden');
         document.getElementById('word-container').classList.remove ('hidden')
     }
+}
+
+//Displaying Open Data
+const loadWordDetails = async (word) => {
+    const url =`https://phi-lab-server.vercel.app/api/v1/lab/issue/${word}`;
+    const res = await fetch(url);
+    const details = await res.json();
+    displayWordDetails(details.data);
+}
+
+const displayWordDetails = (word) =>{
+    const formatDate = (date) =>
+    new Intl.DateTimeFormat(undefined, {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    }).format(new Date(date));
+    const detailsBox = document.getElementById('details-box');
+    detailsBox.innerHTML=`
+        <div class="rounded-md h-full flex flex-col space-y-5 p-3">
+                <div class="card-info flex flex-col gap-2 flex-grow">
+                    <p class="text-xl font-semibold">${word.title}.</p>
+                </div>
+                <div>
+                    <p class="text-gray-400"> <span class="bg-[#00A96E] text-white text-sm p-1 px-5 w-fit rounded-full">Opened</span> • ${formatDate(word.createdAt)} </p>
+                </div>
+                <p class=" text-gray-400">${word.description}</p>
+                <div class="card-status flex gap-4 ">
+                    ${word.labels.map(label => {
+                        if(label === 'bug'){
+                            return `<p class="p-1 rounded-full bg-[#Ef444450] text-[#Ef4444] text-xs"><i class="fas fa-bug"></i> ${label}</p>`;
+                        } else if(label === 'help wanted'){
+                            return `<p class="p-1 rounded-full bg-[#FDE68A50] text-[#92400E] text-xs"><i class="fas fa-hands-helping "></i> ${label}</p>`;
+                        } else if(label === 'documentation'){
+                            return `<p class="p-1 rounded-full bg-[#E5E7EB] text-[#4B5563] text-xs"><i class="fas fa-tag"></i> ${label}</p>`;
+                        } else if (label === 'enhancement'){
+                            return `<p class="p-1 rounded-full bg-[#60A5FA50] text-[#2563EB] text-xs"><i class="fas fa-lightbulb"></i> ${label}</p>`;
+                        } else if (label === 'good first issue'){
+                            return `<p class="p-1 rounded-full bg-[#dae41b50] text-[#f58c03] text-xs"><i class="fas fa-star"></i> ${label}</p>`;
+                        }   
+                    }).join('')}
+                </div>
+                <div class="grid grid-cols-2 mt-auto rounded-sm bg-[#64748B50] p-4">
+                    <div><p class="text-black"> <span class = 'text-gray-400'>Assignee:<br></span> ${word.author}</p></div>
+                    <div><p class="text-black"> <span class = 'text-gray-400'>Priority:</span></p>
+                    <p class="p-1 ${word.priority ==='high' ? ' bg-red-500 text-white' : word.priority === 'medium' ? 'bg-yellow-500 text-white' : 'bg-[#4B5563] text-white'}  text-xs px-5 rounded-full w-fit">${word.priority.toUpperCase()}</p></div>
+                </div>
+            </div>
+    `
+    console.log(word);
+    document.getElementById('my_modal_5').showModal();
 }

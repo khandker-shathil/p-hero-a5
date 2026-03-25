@@ -41,7 +41,7 @@
             <div class="flex gap-2 items-center">
                 <img class=" bg-purple-300/50 rounded-full p-2" src="./assets/Aperture.png" alt="">
                 <div class="flex flex-col">
-                    <h1 class="text-2xl font-semibold">50 Issues</h1>
+                    <h1 id="issue-count" class="text-2xl font-semibold"></h1>
                     <p class="text-gray-500">Track and manage your project issues</p>
                 </div>
             </div>
@@ -52,7 +52,7 @@
         </div>
     </section>
 
-     <section id="spinner" class="flex justify-center items-center py-10 hidden">
+    <section id="spinner" class="flex justify-center items-center py-10 hidden">
         <span class="loading loading-bars loading-xl"></span>
     </section>
 
@@ -79,6 +79,16 @@
             </div> -->
         </div>
     </section>
+
+    <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box">
+            <div id="details-box" class="space-y-5"></div>
+            <div class="modal-action">
+            <form method="dialog">
+                <button class="btn btn-active btn-primary">Close</button>
+            </form>
+        </div>
+    </dialog>
 
     <script src="./scripts/index.js"></script>
 </body>
