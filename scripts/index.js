@@ -275,3 +275,25 @@ const displayWordDetails = (word) =>{
     console.log(word);
     document.getElementById('my_modal_5').showModal();
 }
+
+//Search Functionality
+document.getElementById("btn-search").addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter'){
+        const inputValue = document.getElementById('btn-search');
+        console.log(inputValue.value);
+        const searchValue = inputValue.value.trim().toLowerCase();
+        if(!searchValue) {alert("Please enter a search term"); return;};
+
+    fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
+    .then((res)=>res.json())
+    .then((json)=>{
+        const allWords = json.data;
+        const filterWords = allWords.filter((word)=>word.title.toLowerCase().includes(searchValue));
+        if(filterWords.length === 0){
+            alert("No results found");
+            return;
+        } else {
+        displayData(filterWords);}
+    })
+}   
+});
